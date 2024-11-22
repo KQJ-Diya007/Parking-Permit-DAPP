@@ -2,28 +2,23 @@
 pragma solidity ^0.8.0;
 
 contract ParkingPass {
-    address public schoolAddress;
+    address payable public schoolAddress;
+    address public studentAddress;
+
     uint public cost;
 
-    enum PassType { 
-        Daily, 
-        Weekly, 
-        Semester 
-    }
 
     struct ParkingPassInfo {
-        PassType passType;
-        uint256 expirationTimestamp;
         address studentAddress;
-    }
 
-    struct Vehicle {
         string make;
         string model;
         string licensePlate;
+
+        uint passType;
+        uint256 expirationTimestamp;
     }
 
-    Vehicle public studentVehicle;
 
     // Mapping of license plates to parking pass history
     mapping(string => ParkingPassInfo[]) private allPasses;
@@ -31,73 +26,62 @@ contract ParkingPass {
     mapping(string => ParkingPassInfo) private mostRecentPass;
     mapping(address => uint) public balance;
 
-    // Constructor to initialize state variable
-    constructor(
-        string memory _make, 
-        string memory _model, 
-        string memory _licensePlate, 
-        address payable _schoolAddress
-    ) {
-        // Setting variables
-        studentVehicle = Vehicle(_make, _model, _licensePlate);
-        schoolAddress = _schoolAddress;
-    }
 
     // Function to buy a pass
-    function buyPass(PassType _pass, address _studentAddress) public payable {
+    function buyPass(address payable _schoolAddress, address _studentAddress, string memory _make, string memory _model, string memory _licensePlate, uint _pass) public payable {
         uint256 duration;
+        schoolAddress = _schoolAddress;
+        studentAddress = _studentAddress;
+
+        require(msg.value == 1 ether, "You must send exactly 1 Ether!");
+        // Transfer Ether to the school address
+        payable(schoolAddress).transfer(msg.value);
+
+
 
         // Determine cost and duration based on pass type
-        if (_pass == PassType.Daily) {
+        if (_pass == 1) {
             duration = 10 seconds;
-            cost = 0.1 ether;
-        } else if (_pass == PassType.Weekly) {
+            cost = 1 ether;
+        } else if (_pass == 2) {
             duration = 20 seconds;
-            cost = 0.2 ether;
-        } else if (_pass == PassType.Semester) {
+            cost = 2 ether;
+        } else if (_pass == 3) {
             duration = 30 seconds;
-            cost = 0.3 ether;
+            cost = 3 ether;
         }
 
         // Set expiration timestamp
         uint256 expiration = block.timestamp + duration;
 
         // Update the most recent pass and the history
-        mostRecentPass[studentVehicle.licensePlate] = ParkingPassInfo(
+        mostRecentPass[_licensePlate] = ParkingPassInfo(
+            _studentAddress,
+            _make,
+            _model,
+            _licensePlate,
             _pass,
-            expiration,
-            _studentAddress
+            expiration
         );
-        allPasses[studentVehicle.licensePlate].push(
-            ParkingPassInfo(_pass, expiration, _studentAddress)
+        allPasses[_licensePlate].push(
+            ParkingPassInfo
+            (
+                _studentAddress,
+                _make,
+                _model,
+                _licensePlate,
+                _pass,
+                expiration
+            )
         );
 
-        // Transfer Ether to the school address
-        payable(schoolAddress).transfer(msg.value);
     }
 
     // Function to get the most recent pass for a vehicle
-    function getMostRecentPass(string memory _licensePlate) 
-        public 
-        view 
-        returns (address) 
+    function getMostRecentPass(string memory _licensePlate) public view returns (address) 
     {
+
         return mostRecentPass[_licensePlate].studentAddress;
     }
 
-    // Function to deposit Ether into the contract
-    function deposit() public payable {
-        require(msg.value > 0, "Deposit must be greater than 0");
-        balance[msg.sender] += msg.value;
-    }
-
-    // Function to withdraw Ether from the contract
-    function withdraw(uint amount) public {
-        // Check if the sender has enough balance
-        require(amount <= balance[msg.sender], "Insufficient balance");
-
-        // Perform the withdrawal
-        balance[msg.sender] -= amount;
-        payable(msg.sender).transfer(amount);
-    }
 }
