@@ -1,46 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, initial-scale=1.0, maximum-scale=1.0"
+    />
     <title>Parking Pass Portal</title>
-    <link rel="stylesheet" href="index.css">
-</head>
-<body>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
     <header class="header">
-        <div class="header-content">
-            <img src="sac_state_logo.png" alt="Sacramento State Logo" class="logo">
-            <!-- <h1>Parking Pass Portal</h1> -->
-        </div>
+      <div class="header-content">
+        <img
+          src="sac_state_logo.png"
+          alt="Sacramento State Logo"
+          class="logo"
+        />
+        <!-- <h1>Parking Pass Portal</h1> -->
+      </div>
     </header>
     <main class="container">
-        <div class="form-container">
-            <h2>Vehicle Pass Registration</h2>
-            <form action="#">
-                <div class="form-group">
-                    <label for="make">Make</label>
-                    <input type="text" id="make" name="make" placeholder="Enter vehicle make">
-                </div>
-                <div class="form-group">
-                    <label for="model">Model</label>
-                    <input type="text" id="model" name="model" placeholder="Enter vehicle model">
-                </div>
-                <div class="form-group">
-                    <label for="license">License Plate Number</label>
-                    <input type="text" id="license" name="license" placeholder="Enter license plate number">
-                </div>
-                <div class="form-group">
-                    <label for="passType">Pass Type</label>
-                    <select id="passType" name="passType">
-                        <option value="semester">Semester</option>
-                    </select>
-                </div>
-                <button type="submit" class="submit-btn">Purchase Permit</button>
-            </form>
-        </div>
+      <div class="form-container">
+        <h2>Vehicle Pass Registration</h2>
+        <form action="#">
+          <div class="form-group">
+            <label for="make">Make</label>
+            <input
+              type="text"
+              id="make"
+              name="make"
+              placeholder="Enter vehicle make"
+            />
+          </div>
+          <div class="form-group">
+            <label for="model">Model</label>
+            <input
+              type="text"
+              id="model"
+              name="model"
+              placeholder="Enter vehicle model"
+            />
+          </div>
+          <div class="form-group">
+            <label for="license">License Plate Number</label>
+            <input
+              type="text"
+              id="license"
+              name="license"
+              placeholder="Enter license plate number"
+            />
+          </div>
+          <div class="form-group">
+            <label for="passType">Pass Type</label>
+            <select id="passType" name="passType">
+              <option value="semester">Semester</option>
+            </select>
+          </div>
+          <button type="submit" class="submit-btn">Purchase Permit</button>
+        </form>
+      </div>
     </main>
     <footer class="footer">
-        <p>© 2024 CSUS Parking System</p>
+      <p>© 2024 CSUS Parking System</p>
     </footer>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
