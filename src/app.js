@@ -1,228 +1,80 @@
-// Connect to local Ganache blockchain
-const web3 = new web3("http://127.0.0.1:8545");
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM fully loaded and parsed");
 
-// Get the contract ABI and address from ParkingPass.json
-const contractABI = [
-  {
-    inputs: [],
-    name: "cost",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "schoolAddress",
-    outputs: [
-      {
-        internalType: "address payable",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "studentAddress",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_studentAddress",
-        type: "address",
-      },
-      {
-        internalType: "string",
-        name: "_make",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "_model",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "_licensePlate",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "_pass",
-        type: "uint256",
-      },
-    ],
-    name: "buyPass",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "_licensePlate",
-        type: "string",
-      },
-    ],
-    name: "getMostRecentPass",
-    outputs: [
-      {
-        internalType: "address",
-        name: "studentAddr",
-        type: "address",
-      },
-      {
-        internalType: "string",
-        name: "make",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "model",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "licensePlate",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "passType",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "expiration",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "_licensePlate",
-        type: "string",
-      },
-    ],
-    name: "getAllPasses",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "address",
-            name: "studentAddress",
-            type: "address",
-          },
-          {
-            internalType: "string",
-            name: "make",
-            type: "string",
-          },
-          {
-            internalType: "string",
-            name: "model",
-            type: "string",
-          },
-          {
-            internalType: "string",
-            name: "licensePlate",
-            type: "string",
-          },
-          {
-            internalType: "uint256",
-            name: "passType",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "expiration",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct ParkingPass.ParkingPassInfo[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-];
-const contractAddress = "0xYourDeployedContractAddress"; // Replace with deployed contract address
-const parkingContract = new web3.eth.Contract(contractABI, contractAddress);
+  const web3 = new Web3("http://127.0.0.1:8545"); // Connect to Ganache
 
-// Event listener for form submission
-document
-  .querySelector(".submit-btn")
-  .addEventListener("click", async (event) => {
-    event.preventDefault(); // Prevent form submission
+  // Fetchs contract ABI and address
+  fetch("build/contracts/ParkingPass.json")
+    .then((response) => response.json())
+    .then(async (parkingPassArtifact) => {
+      const contractABI = parkingPassArtifact.abi;
 
-    // Get input values from the form
-    const make = document.getElementById("make").value;
-    const model = document.getElementById("model").value;
-    const license = document.getElementById("license").value;
-    const passType = parseInt(document.getElementById("passType").value); // Convert to integer
+      // Get the current deployed network ID
+      const networkId = await web3.eth.net.getId();
+      if (!parkingPassArtifact.networks[networkId]) {
+        throw new Error(`Contract not deployed on the current network (ID: ${networkId}).`);
+      }
 
-    console.log({ make, model, license, passType });
+      const contractAddress = parkingPassArtifact.networks[networkId].address;
+      const parkingContract = new web3.eth.Contract(contractABI, contractAddress);
+      console.log("Contract initialized:", parkingContract); //Debug for checking if the contract is created
 
-    // Call the blockchain function to purchase the permit
-    await purchasePermit(make, model, license, passType);
-  });
+      
+      document.querySelector(".submit-btn").addEventListener("click", async (event) => {
+        event.preventDefault(); // Prevent default behavior
+        console.log("Purchase button clicked"); //debug to see if purchase button works
 
-// Function to handle purchasing a parking pass
-async function purchasePermit(make, model, license, passType) {
+        // Collect form data
+        const make = document.getElementById("make").value;
+        const model = document.getElementById("model").value;
+        const license = document.getElementById("license").value;
+        const passType = parseInt(document.getElementById("passType").value);
+
+        if (!make || !model || !license || isNaN(passType)) {
+          alert("Please fill all fields correctly.");
+          return;
+        }
+
+        await handlePurchase(parkingContract, web3, make, model, license, passType);
+      });
+    })
+    .catch((error) => console.error("Failed to load contract artifact:", error));
+});
+
+// Handle the purchase process
+async function handlePurchase(parkingContract, web3, make, model, license, passType) {
   try {
-    // Get the user's Ethereum accounts
     const accounts = await web3.eth.getAccounts();
-    const userAccount = accounts[0]; // Use the first account as the sender
+    const userAccount = accounts[0];
 
-    // Validate pass type and determine Ether cost
-    let etherCost;
-    if (passType === 1) etherCost = "1"; // 1 Ether for pass type 1
-    else if (passType === 2) etherCost = "2"; // 2 Ether for pass type 2
-    else if (passType === 3) etherCost = "3"; // 3 Ether for pass type 3
-    else {
-      alert("Invalid pass type selected!");
-      return;
-    }
+    // Determine Ether cost based on pass type
+    let etherCost = "0";
+    if (passType === 1) 
+      etherCost = "1";
+    else if (passType === 2) 
+      etherCost = "2";
+    else if (passType === 3) 
+      etherCost = "3";
 
-    // Interact with the smart contract's `buyPass` function
     const result = await parkingContract.methods
       .buyPass(userAccount, make, model, license, passType)
       .send({
         from: userAccount,
-        value: web3.utils.toWei(etherCost, "ether"), // Send the correct Ether amount
+        value: web3.utils.toWei(etherCost, "ether"),
+        gas: 500000, // Explicitly set gas limit
       });
 
-    // Log the transaction result and notify the user
+    const schoolBalance = await parkingContract.methods.getSchoolBalance().call();
+    console.log(`School Address Balance: ${schoolBalance} ETH`);
+
+    // Display the balance on the webpage
+    document.getElementById("status").innerHTML += `<p>School Balance: ${schoolBalance} ETH</p>`;
+      
+    // Display transaction result
+    document.getElementById("status").innerHTML = `<p>Pass purchased successfully!</p>`;
     console.log("Transaction successful:", result);
-    alert("Permit purchased successfully!");
   } catch (error) {
-    // Log errors and alert the user
     console.error("Transaction failed:", error);
-    alert("Transaction failed. Please try again.");
+    document.getElementById("status").innerHTML = `<p>Transaction failed, you already have an active permit</p>`;
   }
 }
