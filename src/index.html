@@ -13,7 +13,7 @@
     <header class="header">
       <div class="header-content">
         <img
-          src="sac_state_logo.png"
+          src="/media/sac_state_logo.png"
           alt="Sacramento State Logo"
           class="logo"
         />
@@ -54,11 +54,14 @@
           <div class="form-group">
             <label for="passType">Pass Type</label>
             <select id="passType" name="passType">
-              <option value="semester">Semester</option>
+              <option value="1">Daily</option>
+              <option value="2">Weekly</option>
+              <option value="3">Semester</option>
             </select>
           </div>
-          <button type="submit" class="submit-btn">Purchase Permit</button>
+          <button type="button" class="submit-btn">Purchase Permit</button>
         </form>
+          <div id="status"></div>
       </div>
     </main>
     <footer class="footer">
