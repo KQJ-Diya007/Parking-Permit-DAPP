@@ -87,4 +87,10 @@ contract ParkingPass {
         return allPasses[_licensePlate];
     }
 
+    // Function to get the balance of the school address
+    function getSchoolBalance() public view returns (uint256) {
+        return schoolAddress.balance / 1 ether;
+    }
+
+
 }
