@@ -19,7 +19,7 @@ Node.js is a JavaScript runtime required to install and run the app.
 ```bash
 node -version
 ```
-**Verify Node Installation**:
+**Verify npm Installation**:
 ```bash
 npm -version
 ```
@@ -80,10 +80,10 @@ npm install web3
 **Verify Web3.js Installation**:
 
 ```bash
-
+npm list web3
 ```
 
-The output should look similar to this
+The output should look similar to this:
 ```bash
 yourUserNameHere@ /Users/yourUserNameHere
 └─┬ truffle@5.11.5
@@ -100,95 +100,100 @@ yourUserNameHere@ /Users/yourUserNameHere
 
 ## Setup DAPP and Run the Application
 Follow these steps to run the application locally:
+You will need to have three seperate terminals running at the same time.
 
 ### Step 1: Clone the Repository
-Clone the project repository from GitHub:
 
-bash
-Copy code
-git clone <repository-url>
-Navigate into the project directory:
+1. Clone the project repository from GitHub:
 
-bash
-Copy code
+```bash
+git clone https://github.com/JM000N/CSUS-Parking-DAPP/
+```
+
+
+2. Navigate into the project directory:
+
+```bash
 cd CSUS-Parking-DAPP
-
+```
 
 ### Step 2: Start Ganache
-Option 1: Ganache Desktop
-Open Ganache and create a new workspace.
-Option 2: Ganache CLI Start Ganache CLI with the following command:
-bash
-Copy code
-ganache
+1. Open the first terminal in your project directory.  
+
+2. Start Ganache CLI with the following command:
+   
+```bash
+ganache-cli
+```
 This will run a local Ethereum blockchain on http://127.0.0.1:8545.
 
+
 ### Step 3: Compile and Deploy Smart Contracts
-Open a new terminal in the project directory.
-Compile the smart contracts:
-bash
-Copy code
+1. Open a second terminal in the project directory.
+
+2. Compile the smart contracts with the following command:
+```bash
 truffle compile
-Deploy the smart contracts to Ganache:
-bash
-Copy code
+```
+
+3. Deploy the smart contracts to Ganache with the following command:
+```bash
 truffle migrate --reset
+```
+
 Step 4: Start the Frontend
-Open another terminal in the project directory.
-Start the lite-server:
-bash
-Copy code
+1. Open a third terminal in the project directory.
+2. Start the lite-server with the following command:
+
+```bash
 npx lite-server
-The frontend will open automatically in your default browser at http://127.0.0.1:3000.
-Testing the Application
-1. Purchase a Permit
-Fill out the parking permit form on the webpage:
-Make: Vehicle make (e.g., Toyota)
-Model: Vehicle model (e.g., Camry)
-License Plate: Enter a license plate number (e.g., ABC123).
-Pass Type: Select daily, weekly, or semester.
-Click Purchase Permit.
-2. View Console Logs
-Open the browser developer tools (Right-click > Inspect > Console).
-Logs will include:
-Student and school balances (before and after the transaction).
-Gas costs for the transaction.
-Status messages for successful and unsuccessful purchases.
-3. Error Handling
-If you try to purchase a second permit before the first expires, you will see this error message in the console and on the webpage:
+```
+The frontend local webpage will open automatically in your default browser at http://127.0.0.1:3000.
 
-plaintext
-Copy code
-Unable to purchase: you already have an active pass.
-Additional Testing: getBalances.js
-You can manually check account balances using the getBalances.js script.
 
-Steps:
-Open a terminal in the project directory.
-Run the script:
-bash
-Copy code
+## Testing the Application
+
+### Purchase a Permit
+1. Fill out the parking permit form on the webpage:
+   - Make: Vehicle make (e.g., Toyota)
+   - Model: Vehicle model (e.g., Camry)
+   - License Plate: Enter a license plate number (e.g., ABC123).
+   - Pass Type: Select daily, weekly, or semester.
+   
+3. Click Purchase Permit.
+
+### View Console Logs
+1.  Open the browser developer tools (Right-click > Inspect > Console).
+    - Logs will include:
+       - Student and school balances (before and after the transaction).
+       - Gas costs for the transaction.
+       - Status messages for successful and unsuccessful purchases.
+
+
+### Error Handling
+- If you try to purchase a second permit before the first expires, you will see this error message in the console and on the webpage:
+```bash
+Transaction failed: Student has an active pass.
+```
+
+
+## Additional Testing: getBalances.js
+You can manually check account balances using the **getBalances.js** script.
+
+### Checking Balances:
+
+1. Open a terminal in the project directory.
+
+2. Run the script:
+
+```bash
 node getBalances.js
-The output will show:
-plaintext
-Copy code
+```
+
+The output will be similar to the following:
+```bash
 School Balance: 3 ETH
 Student Balance: 990 ETH
-Project Structure
-contracts/: Contains the Solidity smart contracts.
-src/: Contains the frontend JavaScript (app.js).
-build/: Contains the compiled contract artifacts.
-index.html: The main entry point for the DApp frontend.
-FAQs
-1. What should I do if I see "Contract not deployed on the current network"?
-Ensure Ganache is running.
-Redeploy the contract:
-bash
-Copy code
-truffle migrate --reset
-2. How do I clear browser cache?
-Open your browser settings and clear the cache.
-Alternatively, open the DApp in an incognito/private browsing window.
-3. Can I test using multiple accounts?
-Use other accounts listed in Ganache.
-Update the account in the console log if needed for testing.
+```
+
+
