@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Parking Pass Enforcer</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header class="header">
+      <div class="header-content">
+        <img
+          src="/media/sac_state_logo.png"
+          alt="Sacramento State Logo"
+          class="logo"
+        />
+      </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container">
+      <div class="form-container">
+        <h2>Check Parking Pass</h2>
+        
+        <!-- License Plate Input Form -->
+        <div class="form-group">
+          <label for="licensePlate">Enter License Plate:</label>
+          <input type="text" id="licensePlate" placeholder="Enter liscense plate number" />
+        </div>
+
+        <!-- Button to Check Parking Pass -->
+        <button id="checkPassButton" class="submit-btn">Check Parking Pass</button>
+
+        <!-- Result Display -->
+        <p id="result"></p>
+      </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+      <p>© 2024 CSUS Parking System</p>
+    </footer>
+
+    <!-- Web3.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+
+    <!-- Custom JS File -->
+    <script src="enforcer.js"></script>
+  </body>
+</html>
