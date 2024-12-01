@@ -176,19 +176,14 @@ Transaction failed: Student has an active pass.
 ```
 
 ## Testing the Parking Enforcer View of the DAPP
-1. In your browser open a new tab copy the following local url into the search bar to load the Parking Enforcement side of the application.
+1. With your Student view already running, open a new tab and copy the following url into the search bar to load the Parking Enforcement side of the application.
 ```bash
 http://localhost:3000/enforcer.html
 ```
-3. Once you have both webpages open, navigate back to the Student view and make sure to purchase a parking permit.
+3. Once you have both webpages open, navigate back to the Student view and purchase a parking permit.
 4. Once you have an active pass, go back to the enforcer webpage and fill out the form by entering the license plate number you would like to check.
+   - It will output at the bottom of the form wether that car has an active pass or not.
  
-
-
-
-
-##
-
 
 ## Additional Testing: getBalances.js
 You can manually check account balances using the **getBalances.js** script.
