@@ -92,5 +92,22 @@ contract ParkingPass {
         return schoolAddress.balance / 1 ether;
     }
 
+// Function to check if a vehicle has a valid parking pass
+function hasValidParkingPass(string memory _licensePlate) public view returns (bool) {
+    // Retrieve all passes associated with the given license plate
+    ParkingPassInfo[] memory passes = allPasses[_licensePlate];
+    
+    // Loop through all passes to find a valid one
+    for (uint i = 0; i < passes.length; i++) {
+        // If we find a pass with an expiration date in the future, return true
+        if (passes[i].expiration > block.timestamp) {
+            return true; // Found a valid pass
+        }
+    }
+    
+    // No valid pass found
+    return false;
+}
+
 
 }
