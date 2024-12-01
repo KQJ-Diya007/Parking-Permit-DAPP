@@ -13,7 +13,7 @@ Node.js is a JavaScript runtime required to install and run the app.
 
 **Installation**:
 - Download Node.js from [Node.js Official Website](https://nodejs.org/).
-- Install the **LTS version** for better stability.
+- Install the LTS version for better stability.
 
 **Verify Node Installation**:
 ```bash
