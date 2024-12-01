@@ -98,7 +98,7 @@ yourUserNameHere@ /Users/yourUserNameHere
 ```
 
 
-## Setup DAPP and Run the Application
+## Setup DAPP and Run the Application (User View)
 Follow these steps to run the application locally:
 You will need to have three seperate terminals running at the same time.
 
@@ -195,5 +195,8 @@ The output will be similar to the following:
 School Balance: 3 ETH
 Student Balance: 990 ETH
 ```
+
+
+
 
 
