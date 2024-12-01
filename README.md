@@ -114,7 +114,7 @@ git clone https://github.com/JM000N/CSUS-Parking-DAPP/
 2. Navigate into the project directory:
 
 ```bash
-cd CSUS-Parking-DAPP
+cd CSUS-Parking-DAPP/
 ```
 
 ### Step 2: Start Ganache
@@ -151,7 +151,7 @@ npx lite-server
 The frontend local webpage will open automatically in your default browser at http://127.0.0.1:3000.
 
 
-## Testing the Application
+## Testing the Student View of the DAPP
 
 ### Purchase a Permit
 1. Fill out the parking permit form on the webpage:
@@ -169,12 +169,25 @@ The frontend local webpage will open automatically in your default browser at ht
        - Gas costs for the transaction.
        - Status messages for successful and unsuccessful purchases.
 
-
 ### Error Handling
 - If you try to purchase a second permit before the first expires, you will see this error message in the console and on the webpage:
 ```bash
 Transaction failed: Student has an active pass.
 ```
+
+## Testing the Parking Enforcer View of the DAPP
+1. In your browser open a new tab copy the following local url into the search bar to load the Parking Enforcement side of the application.
+```bash
+http://localhost:3000/enforcer.html
+```
+3. Once you have both webpages open, navigate back to the Student view and make sure to purchase a parking permit.
+4. Once you have an active pass, go back to the enforcer webpage and fill out the form by entering the license plate number you would like to check.
+ 
+
+
+
+
+##
 
 
 ## Additional Testing: getBalances.js
@@ -184,13 +197,17 @@ You can manually check account balances using the **getBalances.js** script.
 
 1. Open a terminal in the project directory.
 
-2. Run the script:
+```bash
+cd CSUS-Parking-DAPP/
+```
+
+2. Run the following script:
 
 ```bash
 node getBalances.js
 ```
 
-The output will be similar to the following:
+The output should be similar to the following:
 ```bash
 School Balance: 3 ETH
 Student Balance: 990 ETH
