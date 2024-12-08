@@ -199,7 +199,7 @@ cd CSUS-Parking-DAPP/
 2. Run the following script:
 
 ```bash
-node getBalances.js
+node src/getBalances.js
 ```
 
 The output should be similar to the following:
