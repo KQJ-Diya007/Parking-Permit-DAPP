@@ -141,6 +141,11 @@ truffle compile
 truffle migrate --reset
 ```
 
+If needed
+```bash
+npx truffle migrate --reset --network development
+```
+
 Step 4: Start the Frontend
 1. Open a third terminal in the project directory.
 2. Start the lite-server with the following command:
