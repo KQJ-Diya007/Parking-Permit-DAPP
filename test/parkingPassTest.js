@@ -34,10 +34,10 @@ contract("ParkingPass", (accounts) => {
     assert.isAbove(Number(pass.expiration), 0, "Expiration should be extended");
   });
 
-  it("should allow admin to invalidate a permit", async () => {
+  it("Should allow admin to invalidate a permit", async () => {
     const instance = await ParkingPass.deployed();
 
-    // Just check that admin can call invalidate
+    // Just checks that admin can call invalidate
     const tx = await instance.invalidatePass(student, { from: admin });
 
     assert.isTrue(tx.receipt.status, "Invalidate transaction should succeed");
